@@ -10,17 +10,17 @@
 
 export const MOTH_KINDS = {
   ember: {
-    hp: 2, speed: 62, radius: 13, lanternDamage: 6, hullDamage: 8, score: 50,
+    hp: 2, speed: 62, radius: 13, lanternDamage: 3, hullDamage: 8, score: 50,
     colors: ['#ff9a3c', '#ffcf6e', '#ff6a2a'],
     body: '#3a1408', edge: '#ffb03a',
   },
   dart: {
-    hp: 1, speed: 138, radius: 10, lanternDamage: 4, hullDamage: 6, score: 40,
+    hp: 1, speed: 138, radius: 10, lanternDamage: 2, hullDamage: 6, score: 40,
     colors: ['#ff5da2', '#ffc2dd', '#ff2a7a'],
     body: '#33081d', edge: '#ff5da2',
   },
   orb: {
-    hp: 7, speed: 37, radius: 21, lanternDamage: 13, hullDamage: 14, score: 150,
+    hp: 7, speed: 37, radius: 21, lanternDamage: 7, hullDamage: 14, score: 150,
     colors: ['#c77dff', '#e6c6ff', '#9d4dff'],
     body: '#1d0a33', edge: '#c77dff',
   },
@@ -193,8 +193,10 @@ export function waveComposition(wave) {
   const add = (kind, count) => {
     for (let i = 0; i < count; i += 1) list.push(kind);
   };
-  add('ember', 5 + wave * 3);
-  if (wave >= 2) add('dart', Math.min(16, 1 + wave));
+  // The first two waves run light — two fewer embers, and one fewer dart on wave 2 — so a
+  // new warden learns the dark before it presses in earnest; from wave 3 the full curve holds.
+  add('ember', 5 + wave * 3 - (wave <= 2 ? 2 : 0));
+  if (wave >= 2) add('dart', Math.min(16, 1 + wave - (wave === 2 ? 1 : 0)));
   if (wave >= 3) add('orb', Math.min(9, Math.floor((wave - 1) * 1.1)));
   if (wave % 5 === 0) add('storm', 1 + Math.floor(wave / 15));
   // Shuffle so kinds arrive interleaved, not in blocks.

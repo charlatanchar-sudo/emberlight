@@ -88,11 +88,12 @@ export function drawHud(ctx, view, state) {
     ctx.fill();
   }
 
-  // Sound state, a whisper at top-right's foot.
+  // Sound state, a whisper just above the hull bar (at the bar's foot it collided
+  // with the bar's panel and its readout numbers).
   ctx.textAlign = 'right';
   ctx.fillStyle = 'rgba(168, 178, 255, 0.55)';
   ctx.font = `600 11px ${FONT}`;
-  ctx.fillText(state.muted ? 'SOUND OFF — M' : 'SOUND ON — M', view.w - 24, view.h - 18);
+  ctx.fillText(state.muted ? 'SOUND OFF — M' : 'SOUND ON — M', view.w - 24, view.h - 66);
 
   // The two healths, bottom corners: the lantern's light in amber, the hull in cyan.
   bar(ctx, 24, view.h - 52, 250, 13, state.lanternLight / state.lanternMax,
